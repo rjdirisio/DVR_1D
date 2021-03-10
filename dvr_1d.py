@@ -28,34 +28,34 @@ class DVR_1D:
         self.res_dir = outputPath
         self.dx = self.grid[1] - self.grid[0]
 
-    def getPotential(self):
+    def get_potential(self):
         """The potential is placed along a diagonal."""
         return np.diag(self.pot)
 
-    def getKinetic(self):
+    def get_kinetic(self):
         """
         Not-so-elegant construction of the kinetic energy matrix.
         This is based on analytic expressions for the C&M Paper
         """
-        grdSize = self.grid.shape[0]
-        ke = np.zeros((grdSize, grdSize))
-        tCoef = 1 / (2 * self.mass * (self.dx ** 2))
-        for i in range(1, grdSize):
+        grid_size = self.grid.shape[0]
+        ke = np.zeros((grid_size, grid_size))
+        t_coef = 1 / (2 * self.mass * (self.dx ** 2))
+        for i in range(1, grid_size):
             for j in range(i):
-                ke[i, j] = tCoef * (-1.) ** (i - j) * (2. / ((i - j) ** 2))
-        dgVals = tCoef * (np.pi * np.pi / 3.)
+                ke[i, j] = t_coef * (-1.) ** (i - j) * (2. / ((i - j) ** 2))
+        dgVals = t_coef * (np.pi * np.pi / 3.)
         s = ke + ke.T
         np.fill_diagonal(s, dgVals)
         return s
 
-    def diagonalizeH(self):
-        V = self.getPotential()
-        T = self.getKinetic()
-        energies, Wfs = la.eigh(T + V)
-        return energies, Wfs
+    def digonalize_ham(self):
+        V = self.get_potential()
+        T = self.get_kinetic()
+        energies, wfns = la.eigh(T + V)
+        return energies, wfns
 
     def run(self):
-        evals, evecs = self.diagonalizeH()
+        evals, evecs = self.digonalize_ham()
         if not os.path.isdir(self.res_dir):
             os.makedirs(self.res_dir)
 
@@ -84,7 +84,8 @@ if __name__ == "__main__":
     wfns = test_dvr.get_wfns()
     grd = test_dvr.get_grid()
     pot = test_dvr.get_potential()
-    plt.plot(grd, Constants.convert(pot,'wavenumbers',to_AU=False))
+    plt.plot(grd, wfns[:,0])
     plt.show()
     exp_x = test_dvr.exp_val(grd, wfn=wfns, quanta=0)
-    print(exp_x)
+    std = test_dvr.std_dev(grd,wfns,0)
+    print(exp_x, std)

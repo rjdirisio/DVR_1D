@@ -1,5 +1,6 @@
 import numpy as np
-import os, sys
+import os
+
 
 class AnalyzeDVR:
     def __init__(self,
@@ -29,8 +30,8 @@ class AnalyzeDVR:
 
     @staticmethod
     def std_dev(grd, wfn, quanta):
-        av_x = self.exp_val(grd, wfn, quanta)
-        av_x2 = self.exp_val(grd ** 2, wfn, quanta)
+        av_x = AnalyzeDVR.exp_val(grd, wfn, quanta)
+        av_x2 = AnalyzeDVR.exp_val(grd ** 2, wfn, quanta)
         return np.sqrt(av_x2 - av_x ** 2)
 
     @staticmethod
