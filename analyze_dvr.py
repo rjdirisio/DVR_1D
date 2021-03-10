@@ -12,16 +12,20 @@ class AnalyzeDVR:
             res_file = res_file + '.npz'
         self.dvr_npz = np.load(res_file)
 
-    def get_wfns(self):
+    @property
+    def wfns(self):
         return self.dvr_npz['wfns']
 
-    def get_grid(self):
+    @property
+    def grid(self):
         return self.dvr_npz['grid']
 
-    def get_energies(self):
+    @property
+    def energies(self):
         return self.dvr_npz['energies']
 
-    def get_potential(self):
+    @property
+    def potential(self):
         return self.dvr_npz['potential']
 
     @staticmethod

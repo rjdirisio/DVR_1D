@@ -81,11 +81,12 @@ if __name__ == "__main__":
                   mass=mass)
     test.run()
     test_dvr = AnalyzeDVR('dvr_results/dvr_results.npz')
-    wfns = test_dvr.get_wfns()
-    grd = test_dvr.get_grid()
-    pot = test_dvr.get_potential()
-    plt.plot(grd, wfns[:,0])
+    plt.plot(test_dvr.grid, test_dvr.wfns[:,0])
     plt.show()
-    exp_x = test_dvr.exp_val(grd, wfn=wfns, quanta=0)
-    std = test_dvr.std_dev(grd,wfns,0)
+    exp_x = test_dvr.exp_val(test_dvr.grid, wfn=test_dvr.wfns, quanta=0)
+    std = test_dvr.std_dev(test_dvr.grid, wfn=test_dvr.wfns, quanta=0)
+
+    #0 , 6.05 (bohr)
     print(exp_x, std)
+    # 1500, 4500, 7500 cm-1
+    print(Constants.convert(test_dvr.energies,'wavenumbers',to_AU=False)[0:3])
