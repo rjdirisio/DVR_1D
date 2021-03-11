@@ -1,14 +1,14 @@
 import numpy as np
 import numpy.linalg as la
-
+import os
 
 class DVR_1D:
     def __init__(self,
                  grid,
                  potential,
                  mass,
-                 res_flie='dvr_results',
-                 outputPath="dvr_results/"):
+                 res_file='dvr_results',
+                 res_dir="./"):
         """
         A class to do a generic 1D DVR based on the Colbert and Miller paper:
         https://aip.scitation.org/doi/10.1063/1.462100
@@ -24,8 +24,8 @@ class DVR_1D:
         self.grid = grid
         self.pot = potential
         self.mass = mass
-        self.res_file = res_flie
-        self.res_dir = outputPath
+        self.res_file = res_file
+        self.res_dir = res_dir
         self.dx = self.grid[1] - self.grid[0]
 
     def get_potential(self):
@@ -59,7 +59,7 @@ class DVR_1D:
         if not os.path.isdir(self.res_dir):
             os.makedirs(self.res_dir)
 
-        np.savez(self.res_dir + self.res_file,
+        np.savez(f'{self.res_dir}/{self.res_file}',
                  grid=self.grid,
                  potential=self.pot,
                  energies=evals,
@@ -78,9 +78,11 @@ if __name__ == "__main__":
     potential = 0.5 * mass * Constants.convert(omega, 'wavenumbers', to_AU=True) ** 2 * grid ** 2
     test = DVR_1D(grid=grid,
                   potential=potential,
-                  mass=mass)
+                  mass=mass,
+                  res_file='asdf',
+                  res_dir='asdf_results')
     test.run()
-    test_dvr = AnalyzeDVR('dvr_results/dvr_results.npz')
+    test_dvr = AnalyzeDVR('asdf_results/asdf.npz')
     plt.plot(test_dvr.grid, test_dvr.wfns[:,0])
     plt.show()
     exp_x = test_dvr.exp_val(test_dvr.grid, wfn=test_dvr.wfns, quanta=0)
