@@ -1,2 +1,2 @@
-from .analyzeDVR import *
-from .DVR1D import *
+from .dvr_1d import *
+from .analyze_dvr import *
