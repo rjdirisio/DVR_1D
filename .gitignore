@@ -90,5 +90,5 @@ ENV/
 *profraw
 #My simulation results I use for testing
 /dvr_results/*
-*/dvr_results/*
+dvr_1d/dvr_results/*
 /dvr_results/*
